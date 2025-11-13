@@ -2,57 +2,136 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JUNE-MD SESSION</title>
+  <title>JUNE-MD SESSION MANAGER</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="JUNE-MD WhatsApp Session Management">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary-color: #e5f5f1;
+      --secondary-color: #000000;
+      --accent-color: #1e40af;
+      --hover-color: #3b82f6;
+      --active-color: #1e3a8a;
+      --background-overlay: rgba(0, 0, 0, 0.7);
+    }
+
     body {
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
+      padding: 20px;
       background-image: url("https://files.catbox.moe/4h7cp4.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      font-family: 'Roboto', 'Segoe UI', sans-serif;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--background-overlay);
+      z-index: -1;
+    }
+
+    .container {
+      text-align: center;
+      max-width: 500px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .header {
+      margin-bottom: 30px;
+    }
+
+    .title {
+      color: var(--primary-color);
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+
+    .subtitle {
+      color: var(--primary-color);
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-bottom: 30px;
     }
 
     .btn {
       --color: #e5f5f1;
       --color2: rgb(0, 0, 0);
-      width: 200px;
-      padding: 0.5em 1.05em;
-      background-color: blue;
-      border-radius: 5px;
-      border: .3px solid var(--color);
-      transition: .5s;
+      width: 100%;
+      max-width: 280px;
+      padding: 1em 1.5em;
+      background-color: var(--accent-color);
+      border-radius: 8px;
+      border: 2px solid var(--color);
+      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       position: relative;
       overflow: hidden;
       cursor: pointer;
       z-index: 1;
-      font-weight: 500;
-      font-size: 15px;
+      font-weight: 600;
+      font-size: 16px;
       font-family: 'Roboto', 'Segoe UI', sans-serif;
       text-transform: uppercase;
+      letter-spacing: 0.5px;
       color: var(--color);
-      margin-bottom: 22px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
     }
 
-    .btn::after, .btn::before {
+    .btn i {
+      font-size: 18px;
+    }
+
+    .btn::after,
+    .btn::before {
       content: '';
-      display: flex;
+      display: block;
       height: 100%;
-      width: 90%;
+      width: 120%;
       transform: skew(90deg) translate(-50%, -50%);
       position: absolute;
       inset: 50%;
       left: 25%;
       z-index: -1;
-      transition: .5s ease-out;
+      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
       background-color: var(--color);
     }
 
     .btn::before {
       top: -50%;
-      left: -20%;
+      left: -25%;
       transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
     }
 
@@ -66,20 +145,314 @@
 
     .btn:hover {
       color: var(--color2);
+      border-color: var(--hover-color);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
     }
 
     .btn:active {
-      filter: brightness(.5);
-      transform: scale(.90);
+      background-color: var(--active-color);
+      transform: translateY(0) scale(0.98);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .btn:focus {
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn:disabled:hover {
+      transform: none;
+      box-shadow: none;
+      color: var(--color);
+    }
+
+    .button-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .status {
+      margin-top: 20px;
+      padding: 10px;
+      border-radius: 5px;
+      color: var(--primary-color);
+      font-size: 14px;
+      min-height: 20px;
+    }
+
+    .status.success {
+      background-color: rgba(34, 197, 94, 0.2);
+      border: 1px solid rgba(34, 197, 94, 0.5);
+    }
+
+    .status.error {
+      background-color: rgba(239, 68, 68, 0.2);
+      border: 1px solid rgba(239, 68, 68, 0.5);
+    }
+
+    .footer {
+      margin-top: 30px;
+      color: var(--primary-color);
+      font-size: 0.875rem;
+      opacity: 0.8;
+    }
+
+    /* Loading animation */
+    .loading {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: var(--primary-color);
+      animation: spin 1s ease-in-out infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+        margin: 10px;
+      }
+
+      .title {
+        font-size: 2rem;
+      }
+
+      .btn {
+        padding: 0.875em 1.25em;
+        font-size: 15px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .title {
+        font-size: 1.75rem;
+      }
+
+      .subtitle {
+        font-size: 0.9rem;
+      }
+
+      .btn {
+        font-size: 14px;
+        padding: 0.75em 1em;
+      }
+    }
+
+    /* Accessibility improvements */
+    @media (prefers-reduced-motion: reduce) {
+      .btn {
+        transition: none;
+      }
+
+      .btn:hover {
+        transform: none;
+      }
+
+      .loading {
+        animation: none;
+        border: 3px solid var(--primary-color);
+      }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">JUNE-MD</h1>
+      <p class="subtitle">WhatsApp Session Management</p>
+    </div>
 
-  <button onclick="window.open(`/pair`)" class="btn">PAIR Code</button>
-  <button onclick="window.open(`/qr`)" class="btn">QR Code</button>
-  <button onclick="window.open(`https://github.com/binpink2/june-md/fork`)" class="btn">REPO FORK</button>
+    <div class="button-group">
+      <button class="btn" onclick="openPairSession()" id="pairBtn">
+        <i>🔗</i> PAIR Code
+      </button>
+      
+      <button class="btn" onclick="openQRSession()" id="qrBtn">
+        <i>📱</i> QR Code
+      </button>
+      
+      <button class="btn" onclick="forkRepo()" id="forkBtn">
+        <i>⚡</i> REPO FORK
+      </button>
+    </div>
 
+    <div class="status" id="status"></div>
 
+    <div class="footer">
+      <p>Secure Session Management | JUNE-MD v2.0</p>
+    </div>
+  </div>
+
+  <script>
+    // Configuration
+    const CONFIG = {
+      PATHS: {
+        PAIR: '/pair',
+        QR: '/qr',
+        REPO: 'https://github.com/binpink2/june-md/fork'
+      },
+      MESSAGES: {
+        LOADING: 'Opening session...',
+        SUCCESS: 'Session opened successfully!',
+        ERROR: 'Failed to open session. Please try again.',
+        NEW_TAB_BLOCKED: 'Popup blocked! Please allow popups for this site.'
+      }
+    };
+
+    // DOM Elements
+    const statusEl = document.getElementById('status');
+    const pairBtn = document.getElementById('pairBtn');
+    const qrBtn = document.getElementById('qrBtn');
+    const forkBtn = document.getElementById('forkBtn');
+
+    // Utility Functions
+    function showStatus(message, type = '') {
+      statusEl.textContent = message;
+      statusEl.className = `status ${type}`;
+      
+      if (type === 'success' || type === 'error') {
+        setTimeout(() => {
+          statusEl.textContent = '';
+          statusEl.className = 'status';
+        }, 5000);
+      }
+    }
+
+    function setButtonLoading(button, isLoading) {
+      if (isLoading) {
+        button.disabled = true;
+        button.innerHTML = `<span class="loading"></span> Loading...`;
+      } else {
+        button.disabled = false;
+        // Restore original content based on button id
+        if (button.id === 'pairBtn') {
+          button.innerHTML = `<i>🔗</i> PAIR Code`;
+        } else if (button.id === 'qrBtn') {
+          button.innerHTML = `<i>📱</i> QR Code`;
+        } else {
+          button.innerHTML = `<i>⚡</i> REPO FORK`;
+        }
+      }
+    }
+
+    function openNewTab(url, button) {
+      return new Promise((resolve) => {
+        setButtonLoading(button, true);
+        showStatus(CONFIG.MESSAGES.LOADING);
+
+        const newWindow = window.open(url, '_blank', 
+          'noopener,noreferrer,width=600,height=700,scrollbars=yes,resizable=yes');
+
+        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+          showStatus(CONFIG.MESSAGES.NEW_TAB_BLOCKED, 'error');
+          setButtonLoading(button, false);
+          resolve(false);
+          return;
+        }
+
+        // Check if window is successfully opened
+        setTimeout(() => {
+          if (newWindow.closed) {
+            showStatus(CONFIG.MESSAGES.ERROR, 'error');
+          } else {
+            showStatus(CONFIG.MESSAGES.SUCCESS, 'success');
+          }
+          setButtonLoading(button, false);
+          resolve(true);
+        }, 2000);
+      });
+    }
+
+    // Main Functions
+    async function openPairSession() {
+      try {
+        await openNewTab(CONFIG.PATHS.PAIR, pairBtn);
+      } catch (error) {
+        console.error('Error opening pair session:', error);
+        showStatus(CONFIG.MESSAGES.ERROR, 'error');
+        setButtonLoading(pairBtn, false);
+      }
+    }
+
+    async function openQRSession() {
+      try {
+        await openNewTab(CONFIG.PATHS.QR, qrBtn);
+      } catch (error) {
+        console.error('Error opening QR session:', error);
+        showStatus(CONFIG.MESSAGES.ERROR, 'error');
+        setButtonLoading(qrBtn, false);
+      }
+    }
+
+    function forkRepo() {
+      // No loading state for repo fork as it's external
+      window.open(CONFIG.PATHS.REPO, '_blank', 'noopener,noreferrer');
+      showStatus('Opening repository...', 'success');
+    }
+
+    // Event Listeners for better UX
+    document.addEventListener('DOMContentLoaded', () => {
+      // Add keyboard shortcuts
+      document.addEventListener('keydown', (e) => {
+        // Alt + 1 for Pair Code
+        if (e.altKey && e.key === '1') {
+          e.preventDefault();
+          openPairSession();
+        }
+        // Alt + 2 for QR Code
+        else if (e.altKey && e.key === '2') {
+          e.preventDefault();
+          openQRSession();
+        }
+        // Alt + 3 for Repo Fork
+        else if (e.altKey && e.key === '3') {
+          e.preventDefault();
+          forkRepo();
+        }
+      });
+
+      // Prevent multiple rapid clicks
+      let lastClickTime = 0;
+      const buttons = [pairBtn, qrBtn, forkBtn];
+      
+      buttons.forEach(button => {
+        button.addEventListener('click', (e) => {
+          const currentTime = Date.now();
+          if (currentTime - lastClickTime < 1000) {
+            e.preventDefault();
+            return;
+          }
+          lastClickTime = currentTime;
+        });
+      });
+    });
+
+    // Error handling for image load failure
+    document.querySelector('body').style.backgroundImage = "url('https://files.catbox.moe/4h7cp4.jpg')";
+    
+    const backupBackground = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+    const img = new Image();
+    img.onerror = () => {
+      document.querySelector('body').style.backgroundImage = backupBackground;
+    };
+    img.src = "https://files.catbox.moe/4h7cp4.jpg";
+  </script>
 </body>
 </html>
