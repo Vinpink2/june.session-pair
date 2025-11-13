@@ -332,6 +332,31 @@
     .box {
       animation: fadeIn 0.5s ease-out;
     }
+    
+    /* Toast notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--success-color);
+      color: white;
+      padding: 12px 24px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+    
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    
+    .toast.error {
+      background: var(--error-color);
+    }
   </style>
 </head>
 <body>
@@ -370,11 +395,15 @@
     </div>
   </div>
 
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
+
   <script>
     // DOM Elements
     const numberInput = document.getElementById('number');
     const submitBtn = document.getElementById('submit');
     const resultContainer = document.getElementById('result');
+    const toast = document.getElementById('toast');
     
     // Format phone number as user types
     numberInput.addEventListener('input', function(e) {
@@ -461,6 +490,9 @@
           codeDisplay.classList.add('copied');
           copyIndicator.classList.add('show');
           
+          // Show toast notification
+          showToast('Code copied to clipboard!');
+          
           setTimeout(() => {
             codeDisplay.classList.remove('copied');
             copyIndicator.classList.remove('show');
@@ -468,7 +500,7 @@
           
         } catch (err) {
           console.error('Failed to copy: ', err);
-          showMessage('Failed to copy code. Please select and copy manually.', 'error');
+          showToast('Failed to copy code. Please select and copy manually.', 'error');
         }
       });
     }
@@ -481,6 +513,22 @@
           ${message}
         </div>
       `;
+    }
+    
+    // Show toast notification
+    function showToast(message, type = 'success') {
+      toast.textContent = message;
+      toast.className = 'toast';
+      
+      if (type === 'error') {
+        toast.classList.add('error');
+      }
+      
+      toast.classList.add('show');
+      
+      setTimeout(() => {
+        toast.classList.remove('show');
+      }, 3000);
     }
     
     // Enter key support
