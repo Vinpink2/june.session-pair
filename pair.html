@@ -448,7 +448,7 @@
           throw new Error('Service unavailable');
         }
         
-        const data = await response.json();
+        const { data } = await response.json();
         const code = data.code || "Service Unavailable";
         
         // Display the code
