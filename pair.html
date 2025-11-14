@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pair Code</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      background: url("https://files.catbox.moe/zvxy5g.jpg") center/cover no-repeat fixed;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: -1;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .box {
+      width: 380px;
+      min-height: 400px;
+      padding: 30px;
+      text-align: center;
+      background: linear-gradient(145deg, rgba(15, 15, 15, 0.9), rgba(30, 30, 30, 0.9));
+      border-radius: 20px;
+      box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      border: 1px solid rgba(89, 53, 172, 0.3);
+    }
+
+    .box::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, #ff0000, #0000ff, #00ff00, #ffff00, #ff00ff);
+      z-index: -1;
+      filter: blur(15px);
+      opacity: 0;
+      transition: opacity 0.5s ease;
+    }
+
+    .box:hover::before {
+      opacity: 0.4;
+    }
+
+    .box:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 
+        0 15px 40px rgba(89, 53, 172, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+
+    #text {
+      color: #f6f5f5;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .fa-user {
+      font-size: 3rem;
+      margin-bottom: 15px;
+      color: #5935ac;
+      text-shadow: 0 0 15px rgba(89, 53, 172, 0.7);
+      transition: all 0.3s ease;
+    }
+
+    .box:hover .fa-user {
+      transform: scale(1.1);
+      color: #7a4bca;
+    }
+
+    .centered-text {
+      color: #e9e4e4;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+    }
+
+    h3 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #fff 0%, #aaa 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 1px;
+    }
+
+    h6 {
+      color: #b8b8b8;
+      margin: 12px 0;
+      font-weight: 400;
+      font-size: 0.9rem;
+    }
+
+    .input-container {
+      display: flex;
+      background: rgba(20, 20, 20, 0.8);
+      border-radius: 15px;
+      box-shadow: 
+        0 5px 15px rgba(0, 0, 0, 0.3),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+      padding: 0.4rem;
+      gap: 0.3rem;
+      max-width: 320px;
+      width: 100%;
+      margin: 20px auto;
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .input-container:focus-within {
+      transform: translateY(-3px);
+      box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      border-color: rgba(89, 53, 172, 0.5);
+    }
+
+    .input-container input {
+      border-radius: 12px 0 0 12px;
+      background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 100%);
+      box-shadow: 
+        inset 3px 3px 6px #dcdcdc,
+        inset -3px -3px 6px #ffffff;
+      width: 100%;
+      flex-basis: 75%;
+      padding: 1rem;
+      border: none;
+      border-left: 3px solid #5935ac;
+      color: #000000;
+      transition: all 0.3s ease;
+      font-weight: 500;
+      font-size: 1rem;
+    }
+
+    .input-container input:focus {
+      border-left: 3px solid #c01736;
+      outline: none;
+      box-shadow: 
+        inset 5px 5px 10px #d0d0d0,
+        inset -5px -5px 10px #ffffff,
+        0 0 15px rgba(192, 23, 54, 0.3);
+      transform: scale(1.02);
+    }
+
+    .input-container button {
+      flex-basis: 25%;
+      padding: 1rem;
+      background: linear-gradient(135deg, #5935ac 0%, #7a4bca 100%);
+      font-weight: 700;
+      letter-spacing: 0.2rem;
+      text-transform: uppercase;
+      color: white;
+      border: none;
+      border-radius: 0 12px 12px 0;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 4px 10px rgba(89, 53, 172, 0.3);
+    }
+
+    .input-container button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .input-container button:hover::before {
+      left: 100%;
+    }
+
+    .input-container button:hover {
+      background: linear-gradient(135deg, #c01736 0%, #8b17b6 100%);
+      transform: translateY(-3px);
+      box-shadow: 0 7px 20px rgba(192, 23, 54, 0.5);
+      letter-spacing: 0.3rem;
+    }
+
+    .input-container button:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(192, 23, 54, 0.5);
+    }
+
+    #waiting-message {
+      color: #5935ac;
+      font-weight: 500;
+      display: none;
+    }
+
+    #pair {
+      margin-top: 20px;
+      min-height: 60px;
+    }
+
+    #copy {
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-block;
+      padding: 8px 15px;
+      border-radius: 8px;
+      background: rgba(30, 30, 30, 0.7);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+
+    #copy:hover {
+      transform: scale(1.05);
+      background: rgba(40, 40, 40, 0.8);
+    }
+
+    /* Animations */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        box-shadow: 0 0 20px rgba(250, 249, 249, 0.7);
+      }
+      50% {
+        box-shadow: 0 0 30px rgba(250, 249, 249, 0.9), 0 0 40px rgba(89, 53, 172, 0.5);
+      }
+    }
+
+    /* Floating particles */
+    .particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      overflow: hidden;
+    }
+
+    .particle {
+      position: absolute;
+      background: rgba(89, 53, 172, 0.3);
+      border-radius: 50%;
+      animation: float 15s infinite linear;
+    }
+
+    @keyframes float {
+      0% {
+        transform: translateY(100vh) rotate(0deg);
+        opacity: 0;
+      }
+      10% {
+        opacity: 1;
+      }
+      90% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-100px) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    /* Responsive design */
+    @media (max-width: 500px) {
+      .box {
+        width: 90%;
+        min-height: 380px;
+        padding: 20px 15px;
+      }
+
+      .input-container {
+        flex-direction: column;
+        padding: 0.5rem;
+        max-width: 280px;
+      }
+
+      .input-container input {
+        border-radius: 12px;
+        margin-bottom: 0.5rem;
+        width: 100%;
+      }
+
+      .input-container button {
+        padding: 0.9rem;
+        border-radius: 12px;
+        letter-spacing: 0.15rem;
+        width: 100%;
+      }
+
+      h3 {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+  <div class="container">
+    <div class="main">
+      <div class="box" id="box">
+        <div id="text">
+          <i class="fa fa-user"></i>
+          <h3 class="centered-text">RAVEN-BOT PAIR CODE</h3>
+          <h6>Made On Earth By Humans!</h6>
+          <h6>Enter Your Number with Country Code.</h6>
+          <div class="input-container">
+            <input placeholder="2541466xxx" type="number" id="number" placeholder="Enter your Phone Number with Country Code">
+            <button id="submit">Submit</button>
+          </div>
+          
+          <a id="waiting-message" class="centered-text" style="display: none;">Please wait a moment</a>
+          <br>
+          <main id="pair"></main>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+  <script>
+    // Create floating particles
+    const particlesContainer = document.getElementById('particles');
+    for (let i = 0; i < 15; i++) {
+      const particle = document.createElement('div');
+      particle.classList.add('particle');
+      const size = Math.random() * 20 + 5;
+      particle.style.width = `${size}px`;
+      particle.style.height = `${size}px`;
+      particle.style.left = `${Math.random() * 100}vw`;
+      particle.style.animationDelay = `${Math.random() * 15}s`;
+      particle.style.animationDuration = `${Math.random() * 10 + 10}s`;
+      particlesContainer.appendChild(particle);
+    }
+
+    let a = document.getElementById("pair");
+    let b = document.getElementById("submit");
+    let c = document.getElementById("number");
+    let box = document.getElementById("box");
+
+    async function Copy() {
+      let text = document.getElementById("copy").innerText;
+      let obj = document.getElementById("copy");
+      await navigator.clipboard.writeText(obj.innerText.replace('CODE: ', ''));
+      obj.innerText = "COPIED!";
+      obj.style = "color:#00ff00;font-weight:bold;background:rgba(0,255,0,0.1)";
+      obj.size = "5";
+      setTimeout(() => {
+        obj.innerText = text;
+        obj.style = "color:white;font-weight:bold;background:rgba(30,30,30,0.7)";
+        obj.size = "5";
+      }, 1000);
+    }
+
+    b.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!c.value) {
+        a.innerHTML = '<a style="color:#ff6b6b;font-weight:bold;padding:8px 15px;border-radius:8px;background:rgba(255,107,107,0.1)">Enter your WhatsApp number with Country Code</a><br><br>';
+      } else if (c.value.replace(/[^0-9]/g, "").length < 11) {
+        a.innerHTML = '<a style="color:#ffd93d;font-weight:bold;padding:8px 15px;border-radius:8px;background:rgba(255,217,61,0.1)">Invalid Number</a><br><br>';
+      } else {
+        const Nick = c.value.replace(/[^0-9]/g, "");
+        let bb = "";
+        let bbc = "";
+        const cc = Nick.split('');
+        cc.map(a => {
+          bbc += a;
+          if (bbc.length == 3) {
+            bb += " " + a;
+          } else if (bbc.length == 8) {
+            bb += " " + a;
+          } else {
+            bb += a;
+          }
+        });
+        c.type = "text";
+        c.value = "+" + bb;
+        c.style = "color:black;font-size:18px;font-weight:bold";
+        a.innerHTML = '<div style="color:#5935ac;font-weight:bold;padding:10px;border-radius:8px;background:rgba(89,53,172,0.1)">Please Wait...</div><br>';
+        
+        // Simulate API call with timeout for demo
+        setTimeout(async () => {
+          try {
+            let { data } = await axios(`/code?number=${Nick}`);
+            let code = data.code || "Service Unavailable";
+            a.innerHTML = '<div id="copy" onclick="Copy()" style="color:#ff6b6b;font-weight:bold;padding:12px 20px;border-radius:10px;background:rgba(30,30,30,0.8);box-shadow:0 5px 15px rgba(0,0,0,0.3);cursor:pointer;transition:all 0.3s ease" size="5">CODE: <span style="color:white;font-weight:bold">' + code + '</span></div><br><br>';
+          } catch (error) {
+            a.innerHTML = '<div style="color:#ff6b6b;font-weight:bold;padding:10px;border-radius:8px;background:rgba(255,107,107,0.1)">Error: Service Unavailable</div><br>';
+          }
+        }, 1500);
+      }
+    });
+  </script>
+</body>
+</html>
