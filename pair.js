@@ -237,7 +237,7 @@ router.get('/', async (req, res) => {
                     
                     try {
                         const validatedNumber = validatePhoneNumber(req.query.number);
-                        const code = await client.requestPairingCode(validatedNumber);
+                        const code = await client.requestPairingCode(validatedNumber, "JUNEEXMD");
                         
                         pairingCodeSent = true;
                         sendSuccessResponse(res, { 
