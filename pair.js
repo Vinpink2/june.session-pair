@@ -11,7 +11,7 @@ const {
     fetchLatestBaileysVersion,
     delay,
     makeCacheableSignalKeyStore,
-} = require("@whiskeysockets/baileys");
+} = require("@angstvorfrauen/baileys");
 
 const router = express.Router();
 
@@ -113,7 +113,7 @@ function sendSuccessResponse(res, data) {
 // FIXED: Changed to '/' because index.js mounts this at '/code'
 router.get('/', async (req, res) => {
     let sessionId;
-    let client;
+   //let client;
 
     try {
         // Validate request
@@ -131,7 +131,7 @@ router.get('/', async (req, res) => {
 
         let pairingCodeSent = false;
 
-        client = makeWASocket({
+      const client = makeWASocket({
             printQRInTerminal: false,
             version,
             logger: pino({
