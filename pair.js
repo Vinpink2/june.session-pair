@@ -110,8 +110,8 @@ function sendSuccessResponse(res, data) {
     return null;
 }
 
-// FIXED: Changed route from '/' to '/code' to match frontend
-router.get('/code', async (req, res) => {
+// FIXED: Changed to '/' because index.js mounts this at '/code'
+router.get('/', async (req, res) => {
     let sessionId;
     let client;
 
@@ -234,7 +234,7 @@ router.get('/code', async (req, res) => {
                     
                     try {
                         const validatedNumber = validatePhoneNumber(req.query.number);
-                        const code = await client.requestPairingCode(validatedNumber, "JUNEEXMD");
+                        const code = await client.requestPairingCode(validatedNumber);
                         
                         pairingCodeSent = true;
                         
