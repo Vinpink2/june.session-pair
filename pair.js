@@ -182,13 +182,12 @@ router.get('/', async (req, res) => {
                         // Send success message
                         await client.sendMessage(client.user.id, {
                             text: `
-╔════════════════════
-║ ◇ SESSION CONNECTED ◇
-║ 🔹 BOT: JUNE-MD
-║ 🔹 TYPE: BASE64
-║ 🔹 OWNER: Supreme
-║ 🔹 SESSION ID: ${sessionId}
-╚════════════════════`
+  *SESSION CONNECTED*
+ 🔹 BOT: JUNE-MD
+ 🔹 TYPE: BASE64
+ 🔹 OWNER: Supreme
+ 🔹 SESSION ID: ${sessionId}
+ `
                         }, { quoted: sessionMessage });
 
                         await delay(DELAY_CONFIG.CLOSE);
