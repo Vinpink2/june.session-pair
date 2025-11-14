@@ -113,7 +113,7 @@ function sendSuccessResponse(res, data) {
 // FIXED: Changed to '/' because index.js mounts this at '/code'
 router.get('/', async (req, res) => {
     let sessionId;
-   //let client;
+    let client;
 
     try {
         // Validate request
