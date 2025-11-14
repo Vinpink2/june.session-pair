@@ -11,7 +11,7 @@ const {
     fetchLatestBaileysVersion,
     delay,
     makeCacheableSignalKeyStore,
-} = require("@angstvorfrauen/baileys");
+} = require("@whiskeysockets/baileys");
 
 const router = express.Router();
 
