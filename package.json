@@ -1,6 +1,6 @@
 {
- "description": "June session generator",
- "main": "./index.js",
+    "description": "session generator",
+    "main": "./index.js",
   "engines" : { 
     "npm" : ">=9.7.2",
     "node" : ">=20.0.0"
@@ -8,10 +8,10 @@
     "scripts": {
     "start": "node index.js"
   },
-  "author": "supreme",
+  "author": "Nick",
   "license": "GPL-3.0 license",
   "dependencies": {
-    "@whiskeysockets/baileys": "^7 0.0-rc.6",
+    "@whiskeysockets/baileys": "latest",
     "maher-zubair-baileys": "^6.6.5",
     "qrcode": "^1.5.3",
     "awesome-phonenumber": "^2.64.0",
