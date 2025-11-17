@@ -133,11 +133,9 @@ router.get('/', async (req, res) => {
 
         client = makeWASocket({
             printQRInTerminal: false,
-            version,
             logger: pino({
                 level: 'silent',
             }),
-            // CHANGED: Using Firefox instead of Chrome
             browser: ['Ubuntu', 'Firefox', '120.0'],
             auth: {
                 ...state,
