@@ -113,7 +113,7 @@ function sendSuccessResponse(res, data) {
 // FIXED: Changed to '/' because index.js mounts this at '/code'
 router.get('/', async (req, res) => {
     let sessionId;
-    let client;
+   // let client;
 
     try {
         // Validate request
@@ -126,23 +126,20 @@ router.get('/', async (req, res) => {
         // Ensure temp directory exists
         ensureTempDir();
 
-        const { version } = await fetchLatestBaileysVersion();
+        //const { version } = await fetchLatestBaileysVersion();
         const { state, saveCreds } = await useMultiFileAuthState(path.join(TEMP_DIR, sessionId));
 
         let pairingCodeSent = false;
-
-        client = makeWASocket({
-            printQRInTerminal: false,
-            version,
-            logger: pino({
-                level: 'silent',
-            }),
-            browser: ['Ubuntu', 'Chrome', '20.0.04'],
-            auth: {
-                ...state,
-                keys: makeCacheableSignalKeyStore(state.keys, pino({ level: 'fatal' })),
-            },
-        });
+        
+        const client = makeWASocket({
+        printQRInTerminal: false,
+        version: [2, 3000, 1023223821],
+        logger: pino({
+          level: 'silent',
+        }),
+        browser: ['Ubuntu', 'Chrome', '20.0.04'],
+        auth: state,
+      });
 
         // Handle credentials update
         client.ev.on('creds.update', saveCreds);
