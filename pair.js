@@ -126,14 +126,13 @@ router.get('/', async (req, res) => {
         // Ensure temp directory exists
         ensureTempDir();
 
-        const { version } = await fetchLatestBaileysVersion();
         const { state, saveCreds } = await useMultiFileAuthState(path.join(TEMP_DIR, sessionId));
 
         let pairingCodeSent = false;
 
         client = makeWASocket({
             printQRInTerminal: false,
-            version,
+            version: [2, 3000, 1025190524],
             logger: pino({
                 level: 'silent',
             }),
