@@ -52,9 +52,9 @@ router.get('/', async (req, res) => {
                 if (connection === 'open') {
                     await delay(5000);
                     let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
-                    await delay(800);
+                    await delay(1000);
                     let b64data = Buffer.from(data).toString('base64');
-                    let session = await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: 'trashcore~' + b64data });
+                    let session = await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: 'JUNE-MD:~' + b64data });
 
                     let Mbuvi_MD_TEXT = `
         
@@ -64,11 +64,11 @@ router.get('/', async (req, res) => {
 ║ 🎆 =>OWNER: supreme
 ║ 🟢 =>TYPE: base64
 ╚════════════════════╝
----
+
 ╔════════════════════◇
 ║『 You've chosen June x Bot 』
-║ -Set the session ID in Heroku:
-║ - SESSION_ID: 
+║ Set the session ID in Heroku:
+║ SESSION_ID: 
 ╚════════════════════╝
 
 Don't Forget To Give Star⭐ To My Repo
