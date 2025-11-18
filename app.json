@@ -1,9 +1,9 @@
 {
-    "name": "June session",
-    "description": "a session generator for June md-bot",
-    "logo": "https://files.catbox.moe/ojo6av.jpg",
-    "repository": "https://github.com/vinpink2/JUNE-MD",
-    "keywords": ["JUNE-MD BOT"],
+    "name": "Trash session",
+    "description": "a session generator for Trashcore-bot",
+    "logo": "https://files.catbox.moe/2wj395.jpg",
+    "repository": "https://github.com/Tennor-modz/trashcore-sytem",
+    "keywords": ["Trashcore-MD BOT"],
     "success_url": "/", 
     "buildpacks": [{ "url": "https://github.com/heroku/heroku-buildpack-nodejs#latest" } ],
     "env": {      

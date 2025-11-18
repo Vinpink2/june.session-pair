@@ -3,767 +3,536 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>JUNE X BOT REBORN ⭐</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-  <style>
+  <title>Trashcore pairing site Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
     :root {
-      --primary-color: #5935ac;
-      --primary-hover: #4a2a94;
-      --secondary-color: #c01736;
-      --accent-color: #8b17b6;
-      --gradient: linear-gradient(135deg, #c01736 0%, #8b17b6 100%);
-      --text-light: #f6f5f5;
-      --text-dark: #333;
-      --bg-dark: #0a0a0a;
-      --bg-card: rgba(0, 0, 0, 0.85);
-      --shadow: 0 0 20px rgba(250, 249, 249, 0.7);
-      --shadow-hover: 0 0 25px rgba(250, 249, 249, 0.9);
-      --success-color: #4CAF50;
-      --error-color: #f44336;
-      --warning-color: #ff9800;
-      --info-color: #2196F3;
+      --primary: linear-gradient(135deg, #FF4500, #228B22);
+      --bg: #D2691E;
+      --glass: rgba(255, 255, 255, 0.05);
+      --text: #ffffff;
+      --muted: #708090;
+      --highlight: #FF1493;
+      --radius: 16px;
+      --blur: 12px;
+      --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+      --glow: 0 0 15px rgba(0, 212, 255, 0.3);
     }
 
     * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
     body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      margin: 0;
-      background: url("https://files.catbox.moe/87gjcj.jpg") no-repeat center center fixed;
-      background-size: cover;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      color: var(--text-light);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       position: relative;
-      padding: 20px;
+      overflow-x: hidden;
+      color: var(--text);
+      padding: 80px 20px 120px; /* Space for header and music player */
     }
 
-    body::before {
-      content: '';
-      position: absolute;
+    /* Background with blur effect */
+    .background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -3;
+      filter: blur(8px) brightness(0.6);
+      transform: scale(1.1);
+    }
+
+    /* Header with logo */
+    .header {
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.6);
-      z-index: -1;
-    }
-
-    .container {
       display: flex;
-      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      width: 100%;
-      max-width: 500px;
+      padding: 1rem 2rem;
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur));
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .header {
-      text-align: center;
-      margin-bottom: 20px;
-      width: 100%;
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
     }
 
-    .logo {
-      font-size: 3rem;
-      margin-bottom: 10px;
-      color: var(--text-light);
-      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
-      animation: pulse 2s ease-in-out infinite;
+    .logo-img {
+      height: 40px;
+      width: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(0, 212, 255, 0.3);
+      box-shadow: var(--glow);
     }
 
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-    }
-
-    .title {
-      font-size: 2rem;
-      margin-bottom: 5px;
-      background: var(--gradient);
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--primary);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      font-weight: 700;
-      letter-spacing: 2px;
+      text-shadow: var(--glow);
     }
 
-    .subtitle {
+    /* Battery indicator */
+    .battery-container {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 50px;
+      padding: 0.5rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
       font-size: 0.9rem;
-      opacity: 0.8;
-      margin-bottom: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
 
-    .version-badge {
-      display: inline-block;
-      background: var(--gradient);
-      padding: 5px 15px;
-      border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 600;
-      margin-top: 5px;
+    .battery-icon {
+      color: var(--highlight);
+      font-size: 1.2rem;
     }
 
-    .box {
+    /* Main container */
+    .main-content {
       width: 100%;
-      padding: 30px;
-      text-align: center;
-      background-color: var(--bg-card);
-      border-radius: 15px;
-      transform: perspective(1000px) rotateY(0deg);
-      box-shadow: var(--shadow);
+      max-width: 500px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
       position: relative;
-      transition: all 0.3s ease;
-      overflow: hidden;
-      margin-bottom: 20px;
+      z-index: 1;
+    }
+
+    /* Pairing box */
+    .box {
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur));
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
     }
 
     .box:hover {
-      box-shadow: var(--shadow-hover);
-      transform: perspective(1000px) rotateY(2deg);
+      transform: translateY(-5px);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5), var(--glow);
     }
 
-    .box::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: var(--gradient);
+    .box h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: var(--glow);
     }
 
-    .changelog-box {
-      background-color: rgba(139, 23, 182, 0.1);
-      border: 1px solid rgba(139, 23, 182, 0.3);
-      border-radius: 10px;
-      padding: 15px;
-      margin-bottom: 20px;
-      text-align: left;
+    .box h5 {
+      color: var(--muted);
+      margin-bottom: 1.5rem;
+      font-weight: normal;
     }
 
-    .changelog-title {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: var(--accent-color);
-    }
-
-    .changelog-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .changelog-list li {
-      padding: 8px 0;
-      padding-left: 25px;
-      position: relative;
-      font-size: 0.9rem;
-      line-height: 1.5;
-    }
-
-    .changelog-list li::before {
-      content: '✓';
-      position: absolute;
-      left: 0;
-      color: var(--success-color);
-      font-weight: bold;
-    }
-
+    /* Input styling */
     .input-container {
       display: flex;
-      background: var(--bg-dark);
-      border-radius: 12px;
-      padding: 5px;
-      gap: 5px;
-      margin: 20px 0;
-      box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
     }
 
     .input-container input {
-      border-radius: 10px 0 0 10px;
-      background: #1a1a1a;
-      box-shadow: inset 5px 5px 8px #0f0f0f, inset -5px -5px 8px #252525;
-      width: 100%;
-      flex-basis: 70%;
-      padding: 15px;
-      border: none;
-      border-left: 2px solid transparent;
-      color: var(--text-light);
-      font-size: 16px;
-      transition: all 0.3s ease;
+      flex: 1;
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.3);
+      color: var(--text);
+      font-family: inherit;
+      transition: var(--transition);
     }
 
     .input-container input:focus {
-      border-left: 2px solid var(--primary-color);
       outline: none;
-      box-shadow: inset 5px 5px 8px #0f0f0f, inset -5px -5px 8px #252525, 0 0 8px rgba(89, 53, 172, 0.5);
-    }
-
-    .input-container input::placeholder {
-      color: #888;
+      border-color: var(--highlight);
+      box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.2);
     }
 
     .input-container button {
-      flex-basis: 30%;
-      padding: 15px;
-      background: var(--primary-color);
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      padding: 1rem 1.5rem;
+      background: var(--primary);
       color: white;
       border: none;
-      border-radius: 0 10px 10px 0;
-      transition: all 0.3s ease;
+      border-radius: var(--radius);
+      font-weight: 600;
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 5px;
+      transition: var(--transition);
     }
 
     .input-container button:hover {
-      background: var(--primary-hover);
-    }
-
-    .input-container button:active {
-      transform: scale(0.98);
-    }
-
-    .input-container button:disabled {
-      background: #555;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .result-container {
-      margin-top: 20px;
-      min-height: 60px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .code-display {
-      background: rgba(30, 30, 30, 0.8);
-      border-radius: 10px;
-      padding: 15px;
-      margin: 10px 0;
-      width: 100%;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      position: relative;
-    }
-
-    .code-display:hover {
-      background: rgba(40, 40, 40, 0.9);
-      transform: translateY(-2px);
-    }
-
-    .code-display.copied {
-      background: rgba(30, 60, 30, 0.8);
-      border-color: var(--success-color);
-    }
-
-    .code-label {
-      font-size: 0.9rem;
-      color: #aaa;
-      margin-bottom: 5px;
-    }
-
-    .code-value {
-      font-size: 1.4rem;
-      font-weight: bold;
-      color: var(--text-light);
-      word-break: break-all;
-      letter-spacing: 3px;
-    }
-
-    .copy-indicator {
-      position: absolute;
-      top: 5px;
-      right: 10px;
-      font-size: 0.8rem;
-      color: var(--success-color);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .copy-indicator.show {
-      opacity: 1;
-    }
-
-    .status-message {
-      padding: 10px;
-      border-radius: 8px;
-      margin: 10px 0;
-      width: 100%;
-      text-align: center;
-      font-weight: 500;
-    }
-
-    .status-success {
-      background: rgba(76, 175, 80, 0.2);
-      color: var(--success-color);
-      border: 1px solid rgba(76, 175, 80, 0.3);
-    }
-
-    .status-error {
-      background: rgba(244, 67, 54, 0.2);
-      color: var(--error-color);
-      border: 1px solid rgba(244, 67, 54, 0.3);
-    }
-
-    .status-info {
-      background: rgba(33, 150, 243, 0.2);
-      color: #2196F3;
-      border: 1px solid rgba(33, 150, 243, 0.3);
-    }
-
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: var(--text-light);
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    .instructions {
-      margin-top: 15px;
-      font-size: 0.85rem;
-      color: #aaa;
-      text-align: center;
-      line-height: 1.6;
-    }
-
-    .next-steps {
-      background: rgba(33, 150, 243, 0.1);
-      border: 1px solid rgba(33, 150, 243, 0.3);
-      border-radius: 10px;
-      padding: 20px;
-      margin-top: 15px;
-      text-align: left;
-    }
-
-    .next-steps h3 {
-      color: var(--info-color);
-      margin-bottom: 15px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .steps-list {
-      list-style: none;
-      padding: 0;
-    }
-
-    .steps-list li {
-      padding: 10px 0;
-      padding-left: 30px;
-      position: relative;
-      font-size: 0.9rem;
-      line-height: 1.6;
-    }
-
-    .steps-list li::before {
-      content: attr(data-step);
-      position: absolute;
-      left: 0;
-      background: var(--gradient);
-      color: white;
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.75rem;
-      font-weight: bold;
-    }
-
-    .action-buttons {
-      display: flex;
-      gap: 10px;
-      margin-top: 15px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      flex: 1;
-      min-width: 140px;
-      padding: 12px 20px;
-      border-radius: 8px;
-      border: none;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      text-decoration: none;
-      font-size: 0.9rem;
-    }
-
-    .btn-primary {
-      background: var(--gradient);
-      color: white;
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.1);
-      color: var(--text-light);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .btn:hover {
       transform: translateY(-2px);
       box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
     }
 
-    .btn:active {
-      transform: translateY(0);
+    /* Result display */
+    #pair-result {
+      margin-top: 1.5rem;
+      padding: 1rem;
+      border-radius: var(--radius);
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .footer {
-      margin-top: 20px;
+    #copy-code {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--highlight);
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--transition);
+      margin-top: 1rem;
+      display: none;
+    }
+
+    #copy-code:hover {
+      background: rgba(0, 212, 255, 0.1);
+      box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+    }
+
+    /* Music player - Positioned below pairing container */
+    .music-player {
+      width: 100%;
+      max-width: 500px;
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur));
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      z-index: 90;
       text-align: center;
-      font-size: 0.8rem;
-      color: #888;
+      margin-top: 2rem;
     }
 
-    .footer a {
-      color: var(--accent-color);
-      text-decoration: none;
-      transition: color 0.3s ease;
+    .music-player h3 {
+      color: var(--highlight);
+      margin-bottom: 0.5rem;
+      font-size: 1.2rem;
     }
 
-    .footer a:hover {
-      color: var(--primary-color);
+    .music-title {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
     }
 
-    @media (max-width: 500px) {
-      .container {
-        max-width: 100%;
+    .music-subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .play-btn {
+      background: var(--primary);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: var(--transition);
+    }
+
+    .play-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .play-btn i {
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .time-display {
+      margin-top: 1rem;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .header {
+        padding: 0.8rem 1rem;
       }
       
-      .box {
-        padding: 20px;
+      .logo-text {
+        font-size: 1.2rem;
+      }
+      
+      body {
+        padding: 70px 15px 100px;
       }
       
       .input-container {
         flex-direction: column;
       }
       
-      .input-container input {
-        border-radius: 10px;
-        margin-bottom: 5px;
-      }
-      
       .input-container button {
-        border-radius: 10px;
-        padding: 12px;
-      }
-
-      .action-buttons {
-        flex-direction: column;
-      }
-
-      .btn {
         width: 100%;
       }
-
-      .title {
-        font-size: 1.5rem;
+      
+      .music-player {
+        padding: 1rem;
       }
-
-      .code-value {
-        font-size: 1.2rem;
-      }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .box {
-      animation: fadeIn 0.5s ease-out;
-    }
-    
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%) translateY(100px);
-      background: var(--success-color);
-      color: white;
-      padding: 12px 24px;
-      border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-      opacity: 0;
-      transition: all 0.3s ease;
-    }
-    
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-    
-    .toast.error {
-      background: var(--error-color);
-    }
-
-    .highlight {
-      color: var(--accent-color);
-      font-weight: 600;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <div class="logo">
-        <i class="fas fa-robot"></i>
-      </div>
-      <h1 class="title">JUNE X BOT REBORN ⭐</h1>
-      <p class="subtitle">Next Generation WhatsApp Bot</p>
-      <span class="version-badge">v2.0 - Reborn Edition</span>
+  <!-- Blurred Background Image -->
+  <img src="https://url.bwmxmd.online/Adams.twcferrg.jpg" alt="Trashcore bot Background" class="background-image">
+
+  <!-- Header with Logo -->
+  <header class="header">
+    <div class="logo-container">
+      <img src="https://url.bwmxmd.online/Adams.twcferrg.jpg" alt="Trashcore bot Logo" class="logo-img">
+      <div class="logo-text">𝐓𝐑𝐀𝐒𝐇𝐂𝐎𝐑𝐄-𝐏𝐀𝐈𝐑𝐈𝐍𝐆</div>
     </div>
     
+    <!-- Battery Indicator -->
+    <div class="battery-container">
+      <i class="fas fa-battery-full battery-icon" id="battery-icon"></i>
+      <span id="battery-level">--%</span>
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <div class="main-content">
+    <!-- Pairing Box -->
     <div class="box">
-      <p class="instructions">
-        <i class="fas fa-info-circle"></i> Enter your WhatsApp number with country code to generate a pairing code
-      </p>
+      <h2>PAIRING CODE</h2>
+      <h5>TRASHCORE BOTS </h5>
+      <p>Please enter your number without country code</p>
       
       <div class="input-container">
-        <input type="tel" id="number" placeholder="e.g. 254792021944" pattern="[0-9]*" inputmode="numeric">
-        <button id="submit">
-          <i class="fas fa-key"></i>
-          <span>Get Code</span>
-        </button>
+        <input type="number" id="number" placeholder="put your number" required>
+        <button id="submit">REQUEST CODE</button>
       </div>
       
-      <div class="result-container" id="result">
-        <!-- Results will appear here -->
+      <div id="pair-result">
+        <p id="waiting-message" style="display: none;">Please wait...</p>
       </div>
       
-      <div class="instructions">
-        <p><i class="fas fa-clock"></i> The code will be valid for a limited time</p>
-        <p><i class="fas fa-mobile-alt"></i> Use it in WhatsApp → Settings → Linked Devices</p>
-      </div>
+      <button id="copy-code" onclick="copyCode()">COPY YOUR CODE</button>
     </div>
 
-    <div class="box" id="nextSteps" style="display: none;">
-      <div class="next-steps">
-        <h3>
-          <i class="fas fa-rocket"></i>
-          Next Steps - Deploy Your Bot
-        </h3>
-        <ul class="steps-list">
-          <li data-step="1">Your pairing code has been generated successfully</li>
-          <li data-step="2">Use the code to link your WhatsApp account</li>
-          <li data-step="3">Visit the <span class="highlight">JUNE-X GitHub Repository</span></li>
-          <li data-step="4">Download the ZIP file or clone the repository</li>
-          <li data-step="5">Follow the deployment instructions in the README</li>
-          <li data-step="6">Deploy on your preferred platform (Heroku, Railway, etc.)</li>
-        </ul>
-
-        <div class="action-buttons">
-          <a href="https://github.com/Vinpink2/JUNE-X" target="_blank" class="btn btn-primary">
-            <i class="fab fa-github"></i>
-            Visit Repository
-          </a>
-          <a href="https://github.com/Vinpink2/JUNE-X/archive/refs/heads/main.zip" class="btn btn-secondary">
-            <i class="fas fa-download"></i>
-            Download ZIP
-          </a>
-        </div>
-      </div>
-    </div>
-    
-    <div class="footer">
-      <p>JUNE X BOT REBORN &copy; 2025 | Secure Session Management</p>
-      <p>Developed with ❤️ by <a href="https://github.com/Vinpink2" target="_blank">Vinpink2</a></p>
+    <!-- Music Player - Positioned below pairing container -->
+    <div class="music-player">
+      <h3>PLAY NOW</h3>
+      <div class="music-title">PLAY SONG</div>
+      <div class="music-subtitle">by Trashcore devs</div>
+      <button class="play-btn" onclick="togglePlay()">
+        <i class="fas fa-pause" id="play-icon"></i>
+      </button>
+      <div class="time-display" id="time1">0:00</div>
+      <div class="music-subtitle">PAIRING SONG</div>
+      <audio id="audio1" src="https://url.bwmxmd.online/Adams.ioeeyulj.m4a" loop></audio>
     </div>
   </div>
 
-  <div class="toast" id="toast"></div>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
   <script>
-    const numberInput = document.getElementById('number');
-    const submitBtn = document.getElementById('submit');
-    const resultContainer = document.getElementById('result');
-    const toast = document.getElementById('toast');
-    const nextStepsBox = document.getElementById('nextSteps');
-    
-    // Format phone number as user types
-    numberInput.addEventListener('input', function(e) {
-      let value = e.target.value.replace(/\D/g, '');
-      
-      if (value.length > 3 && value.length <= 7) {
-        value = value.replace(/(\d{3})(\d+)/, '$1 $2');
-      } else if (value.length > 7) {
-        value = value.replace(/(\d{3})(\d{3})(\d+)/, '$1 $2 $3');
+    // DOM elements
+    const pairResult = document.getElementById("pair-result");
+    const submitBtn = document.getElementById("submit");
+    const numberInput = document.getElementById("number");
+    const copyCodeBtn = document.getElementById("copy-code");
+    const waitingMessage = document.getElementById("waiting-message");
+    const batteryLevel = document.getElementById("battery-level");
+    const batteryIcon = document.getElementById("battery-icon");
+
+    // Copy code function
+    async function copyCode() {
+      const code = pairResult.innerText.replace('CODE: ', '');
+      try {
+        await navigator.clipboard.writeText(code);
+        copyCodeBtn.innerText = "COPIED!";
+        copyCodeBtn.style.backgroundColor = "#00ff00";
+        copyCodeBtn.style.color = "#000";
+        setTimeout(() => {
+          copyCodeBtn.innerText = "COPY CODE";
+          copyCodeBtn.style.backgroundColor = "";
+          copyCodeBtn.style.color = "";
+        }, 2000);
+      } catch (err) {
+        console.error('Failed to copy: ', err);
       }
-      
-      e.target.value = value;
-    });
-    
+    }
+
     // Submit handler
-    submitBtn.addEventListener('click', async (e) => {
+    submitBtn.addEventListener("click", async (e) => {
       e.preventDefault();
       
-      const rawNumber = numberInput.value.replace(/\s/g, '');
-      
-      if (!rawNumber) {
-        showMessage('Please enter your WhatsApp number', 'error');
+      if (!numberInput.value) {
+        pairResult.innerHTML = '<p style="color:var(--highlight)">Enter your WhatsApp number without Country Code</p>';
         return;
       }
       
-      if (rawNumber.replace(/\D/g, '').length < 8) {
-        showMessage('Please enter a valid phone number (at least 8 digits)', 'error');
+      const cleanNumber = numberInput.value.replace(/[^0-9]/g, "");
+      
+      if (cleanNumber.length < 11) {
+        pairResult.innerHTML = '<p style="color:#ff5555">Invalid Number</p>';
         return;
       }
       
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = '<div class="loading"></div> Processing';
-      nextStepsBox.style.display = 'none';
-      
-      try {
-        const response = await fetch(`/code?number=${rawNumber}`);
-        
-        if (!response.ok) {
-          throw new Error('Service unavailable');
-        }
-        
-        const data = await response.json();
-        
-        if (data.success && data.code) {
-          displayCode(data.code);
-          nextStepsBox.style.display = 'block';
-          nextStepsBox.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-        } else {
-          throw new Error(data.error || 'Failed to generate code');
-        }
-        
-      } catch (error) {
-        console.error('Error:', error);
-        showMessage(`Failed to generate code: ${error.message}`, 'error');
-        nextStepsBox.style.display = 'none';
-      } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = '<i class="fas fa-key"></i><span>Get Code</span>';
-      }
-    });
-    
-    function displayCode(code) {
-      resultContainer.innerHTML = `
-        <div class="status-message status-success">
-          <i class="fas fa-check-circle"></i> Pairing code generated successfully!
-        </div>
-        <div class="code-display" id="codeDisplay">
-          <div class="code-label">YOUR PAIRING CODE</div>
-          <div class="code-value">${code}</div>
-          <div class="copy-indicator" id="copyIndicator">
-            <i class="fas fa-check"></i> Copied!
-          </div>
-        </div>
-        <p class="instructions">
-          <i class="fas fa-hand-pointer"></i> Click on the code above to copy it to clipboard
-        </p>
-      `;
-      
-      const codeDisplay = document.getElementById('codeDisplay');
-      const copyIndicator = document.getElementById('copyIndicator');
-      
-      codeDisplay.addEventListener('click', async () => {
-        try {
-          await navigator.clipboard.writeText(code);
-          
-          codeDisplay.classList.add('copied');
-          copyIndicator.classList.add('show');
-          
-          showToast('Code copied to clipboard!');
-          
-          setTimeout(() => {
-            codeDisplay.classList.remove('copied');
-            copyIndicator.classList.remove('show');
-          }, 2000);
-          
-        } catch (err) {
-          console.error('Failed to copy: ', err);
-          showToast('Failed to copy code. Please select and copy manually.', 'error');
+      // Format number display
+      let formattedNumber = "";
+      const digits = cleanNumber.split('');
+      digits.forEach((digit, index) => {
+        formattedNumber += digit;
+        if (index === 2 || index === 7) {
+          formattedNumber += " ";
         }
       });
-    }
-    
-    function showMessage(message, type = 'info') {
-      const icons = {
-        error: 'exclamation-triangle',
-        success: 'check-circle',
-        info: 'info-circle'
-      };
       
-      resultContainer.innerHTML = `
-        <div class="status-message status-${type}">
-          <i class="fas fa-${icons[type]}"></i>
-          ${message}
-        </div>
-      `;
-    }
-    
-    function showToast(message, type = 'success') {
-      toast.textContent = message;
-      toast.className = 'toast';
+      numberInput.type = "text";
+      numberInput.value = "+" + formattedNumber;
+      numberInput.style.color = "var(--highlight)";
       
-      if (type === 'error') {
-        toast.classList.add('error');
-      }
+      waitingMessage.style.display = "block";
+      pairResult.innerHTML = "";
+      copyCodeBtn.style.display = "none";
       
-      toast.classList.add('show');
-      
-      setTimeout(() => {
-        toast.classList.remove('show');
-      }, 3000);
-    }
-    
-    numberInput.addEventListener('keypress', (e) => {
-      if (e.key === 'Enter') {
-        submitBtn.click();
+      try {
+        const { data } = await axios(`/code?number=${cleanNumber}`);
+        const code = data.code || "Service Unavailable";
+        
+        pairResult.innerHTML = `
+          <p style="color:var(--highlight); font-weight:bold; font-size:1.2rem;">
+            CODE: <span style="color:white">${code}</span>
+          </p>
+        `;
+        copyCodeBtn.style.display = "inline-block";
+        waitingMessage.style.display = "none";
+      } catch (error) {
+        pairResult.innerHTML = '<p style="color:#ff5555">Error getting pairing code</p>';
+        waitingMessage.style.display = "none";
       }
     });
+
+    // Music player controls
+    const audio = document.getElementById('audio1');
+    const playBtn = document.querySelector('.play-btn');
+    const playIcon = document.getElementById('play-icon');
+    const timeDisplay = document.getElementById('time1');
     
-    numberInput.addEventListener('blur', () => {
-      const rawNumber = numberInput.value.replace(/\s/g, '');
-      if (rawNumber && rawNumber.replace(/\D/g, '').length < 8) {
-        numberInput.style.borderLeft = '2px solid var(--error-color)';
-      } else if (rawNumber) {
-        numberInput.style.borderLeft = '2px solid var(--success-color)';
+    // Auto-play music when page loads (with user interaction)
+    document.addEventListener('click', function initAudio() {
+      audio.play().then(() => {
+        playIcon.classList.replace('fa-play', 'fa-pause');
+        updateTimeDisplay();
+      }).catch(error => {
+        console.log('Auto-play prevented:', error);
+      });
+      document.removeEventListener('click', initAudio);
+    }, { once: true });
+
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        playIcon.classList.replace('fa-play', 'fa-pause');
       } else {
-        numberInput.style.borderLeft = '2px solid transparent';
+        audio.pause();
+        playIcon.classList.replace('fa-pause', 'fa-play');
       }
+    }
+
+    function updateTimeDisplay() {
+      const minutes = Math.floor(audio.currentTime / 60);
+      const seconds = Math.floor(audio.currentTime % 60);
+      timeDisplay.textContent = `${minutes}:${String(seconds).padStart(2, '0')}`;
+      
+      if (!audio.paused) {
+        requestAnimationFrame(updateTimeDisplay);
+      }
+    }
+
+    audio.addEventListener('timeupdate', updateTimeDisplay);
+
+    // Battery status indicator
+    async function updateBattery() {
+      if (navigator.getBattery) {
+        try {
+          const battery = await navigator.getBattery();
+          
+          const updateBatteryUI = () => {
+            const batteryPercent = Math.round(battery.level * 100);
+            batteryLevel.textContent = `${batteryPercent}%`;
+            
+            // Update battery icon based on level
+            let iconClass = 'fa-battery-empty';
+            if (batteryPercent > 80) iconClass = 'fa-battery-full';
+            else if (batteryPercent > 60) iconClass = 'fa-battery-three-quarters';
+            else if (batteryPercent > 40) iconClass = 'fa-battery-half';
+            else if (batteryPercent > 20) iconClass = 'fa-battery-quarter';
+            
+            // Add charging bolt if charging
+            if (battery.charging) {
+              batteryIcon.className = `fas fa-bolt ${iconClass}`;
+              batteryIcon.style.color = '#00ff00';
+            } else {
+              batteryIcon.className = `fas ${iconClass}`;
+              batteryIcon.style.color = 'var(--highlight)';
+            }
+          };
+          
+          battery.addEventListener('levelchange', updateBatteryUI);
+          battery.addEventListener('chargingchange', updateBatteryUI);
+          updateBatteryUI();
+        } catch (error) {
+          console.error('Battery API error:', error);
+        }
+      } else {
+        batteryLevel.textContent = "N/A";
+      }
+    }
+
+    // Initialize
+    window.addEventListener('load', () => {
+      copyCodeBtn.style.display = "none";
+      updateBattery();
+      
+      // Smooth page load
+      document.body.style.opacity = '0';
+      setTimeout(() => {
+        document.body.style.transition = 'opacity 0.5s ease';
+        document.body.style.opacity = '1';
+      }, 100);
     });
   </script>
 </body>
-</html>
+  </html>

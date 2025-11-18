@@ -2,12 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>JUNE-X SESSION MANAGER</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="JUNE-X WhatsApp Session Management">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Mbuvi Sessions</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-iBBXm8fW90+nuLcSKlbmrPcLa0OT92xO1BIsZ+ywDWZCvqsWgccV3gFoRBv0z+8dLJgyAHIhR35VZc2oM/gI1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Montserrat:wght@300;400;600&display=swap" rel="stylesheet">
   <style>
     * {
       margin: 0;
@@ -15,444 +14,487 @@
       box-sizing: border-box;
     }
 
-    :root {
-      --primary-color: #e5f5f1;
-      --secondary-color: #000000;
-      --accent-color: #1e40af;
-      --hover-color: #3b82f6;
-      --active-color: #1e3a8a;
-      --background-overlay: rgba(0, 0, 0, 0.7);
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #0d0d0d;
+      color: #00ffcc;
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
     }
 
-    body {
+    /* Live Cyber-Grid Background */
+    .cyber-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      background: #0d0d0d;
+      overflow: hidden;
+    }
+
+    .cyber-grid::before,
+    .cyber-grid::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background: repeating-linear-gradient(
+        0deg,
+        transparent,
+        transparent 50px,
+        rgba(0, 255, 204, 0.1) 50px,
+        rgba(0, 255, 204, 0.1) 52px
+      );
+      animation: gridMove 20s linear infinite;
+    }
+
+    .cyber-grid::after {
+      background: repeating-linear-gradient(
+        90deg,
+        transparent,
+        transparent 50px,
+        rgba(0, 255, 204, 0.1) 50px,
+        rgba(0, 255, 204, 0.1) 52px
+      );
+    }
+
+    @keyframes gridMove {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-100px); }
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      margin: 0;
-      padding: 20px;
-      background-image: url("https://files.catbox.moe/4h7cp4.jpg");
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      font-family: 'Roboto', 'Segoe UI', sans-serif;
+      gap: 40px;
       position: relative;
+      z-index: 1;
+      margin-top: 60px; /* Space for fixed ticker */
     }
 
-    body::before {
-      content: '';
-      position: absolute;
+    /* News Ticker */
+    .news-container {
+      position: fixed;
       top: 0;
       left: 0;
       right: 0;
-      bottom: 0;
-      background: var(--background-overlay);
-      z-index: -1;
+      z-index: 1000;
+      font-family: 'Orbitron', sans-serif;
     }
 
-    .container {
-      text-align: center;
-      max-width: 500px;
-      width: 100%;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
-      padding: 30px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-
-    .header {
-      margin-bottom: 30px;
-    }
-
-    .title {
-      color: var(--primary-color);
-      font-size: 2.5rem;
+    .news-container .title {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 40%;
+      background: linear-gradient(90deg, #ff2e63, #7209b7);
+      padding: 10px 24px;
+      color: #fff;
       font-weight: 700;
-      margin-bottom: 10px;
-      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+      z-index: 1001;
     }
 
-    .subtitle {
-      color: var(--primary-color);
-      font-size: 1rem;
-      opacity: 0.9;
-      margin-bottom: 30px;
-    }
-
-    .btn {
-      --color: #e5f5f1;
-      --color2: rgb(0, 0, 0);
+    .news-container .ticker {
       width: 100%;
-      max-width: 280px;
-      padding: 1em 1.5em;
-      background-color: var(--accent-color);
+      overflow: hidden;
+      background: rgba(0, 0, 0, 0.9);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+      margin-left: 40%; /* Align ticker content to right of title */
+    }
+
+    .news-container ul {
+      display: flex;
+      list-style: none;
+      margin: 0;
+      padding: 10px 0;
+      animation: scroll 20s infinite linear;
+    }
+
+    .news-container ul li {
+      white-space: nowrap;
+      padding: 0 24px;
+      color: #00ffcc;
+      font-size: 1rem;
+      text-shadow: 0 0 5px #00ffcc;
+      position: relative;
+    }
+
+    .news-container ul li::after {
+      content: "";
+      width: 1px;
+      height: 100%;
+      background: #00ffcc;
+      position: absolute;
+      top: 0;
+      right: 0;
+      opacity: 0.5;
+    }
+
+    .news-container ul li:last-child::after {
+      display: none;
+    }
+
+    @keyframes scroll {
+      from { transform: translateX(100%); }
+      to { transform: translateX(-100%); }
+    }
+
+    /* Hero Section */
+    .hero {
+      text-align: center;
+      padding: 40px 20px;
+      background: rgba(0, 0, 0, 0.7);
+      border: 2px solid #00ffcc;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 255, 204, 0.3);
+    }
+
+    .hero h1 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      color: #ff2e63;
+      text-shadow: 0 0 10px #ff2e63;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      color: #00ffcc;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    /* Features Section */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      width: 100%;
+    }
+
+    .feature-card {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #00ffcc;
       border-radius: 8px;
-      border: 2px solid var(--color);
-      transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+      padding: 20px;
+      text-align: center;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+    }
+
+    .feature-card h3 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      color: #ff2e63;
+      margin-bottom: 10px;
+    }
+
+    .feature-card p {
+      font-size: 1rem;
+      color: #00ffcc;
+      flex-grow: 1;
+    }
+
+    .feature-card .btn {
+      width: 100%;
+      padding: 0.8em;
+      font-size: 1rem;
+    }
+
+    /* About Section */
+    .about {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #00ffcc;
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .about h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      color: #ff2e63;
+      margin-bottom: 15px;
+    }
+
+    .about p {
+      font-size: 1.1rem;
+      color: #00ffcc;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    /* Contact Section */
+    .contact {
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #00ffcc;
+      border-radius: 8px;
+      padding: 30px;
+      text-align: center;
+      width: 100%;
+    }
+
+    .contact h2 {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      color: #ff2e63;
+      margin-bottom: 15px;
+    }
+
+    .contact p {
+      font-size: 1.1rem;
+      color: #00ffcc;
+      margin-bottom: 20px;
+    }
+
+    /* Buttons */
+    .btn {
+      background: transparent;
+      border: 2px solid #00ffcc;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      color: #00ffcc;
+      text-shadow: 0 0 5px #00ffcc;
+      transition: all 0.3s ease;
       position: relative;
       overflow: hidden;
-      cursor: pointer;
-      z-index: 1;
-      font-weight: 600;
-      font-size: 16px;
-      font-family: 'Roboto', 'Segoe UI', sans-serif;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-      color: var(--color);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
     }
 
-    .btn i {
-      font-size: 18px;
-    }
-
-    .btn::after,
     .btn::before {
       content: '';
-      display: block;
-      height: 100%;
-      width: 120%;
-      transform: skew(90deg) translate(-50%, -50%);
       position: absolute;
-      inset: 50%;
-      left: 25%;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(0, 255, 204, 0.3), transparent);
+      transition: all 0.5s ease;
       z-index: -1;
-      transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-      background-color: var(--color);
-    }
-
-    .btn::before {
-      top: -50%;
-      left: -25%;
-      transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
     }
 
     .btn:hover::before {
-      transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
-    }
-
-    .btn:hover::after {
-      transform: skew(45deg) translate(-50%, -50%);
+      left: 100%;
     }
 
     .btn:hover {
-      color: var(--color2);
-      border-color: var(--hover-color);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4);
+      background: rgba(0, 255, 204, 0.2);
+      box-shadow: 0 0 15px rgba(0, 255, 204, 0.5);
+      color: #fff;
+      border-color: #fff;
     }
 
     .btn:active {
-      background-color: var(--active-color);
-      transform: translateY(0) scale(0.98);
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+      transform: scale(0.95);
+      filter: brightness(0.8);
     }
 
-    .btn:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.5);
-    }
-
-    .btn:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn:disabled:hover {
-      transform: none;
-      box-shadow: none;
-      color: var(--color);
-    }
-
-    .button-group {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    /* Footer */
+    .footer {
+      margin-top: 40px;
+      padding: 20px;
+      background: rgba(0, 0, 0, 0.8);
+      border: 2px solid #00ffcc;
+      border-radius: 8px;
+      text-align: center;
+      color: #00ffcc;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 0.9rem;
+      text-shadow: 0 0 5px #00ffcc;
       width: 100%;
     }
 
-    .status {
-      margin-top: 20px;
-      padding: 10px;
-      border-radius: 5px;
-      color: var(--primary-color);
-      font-size: 14px;
-      min-height: 20px;
+    .footer b {
+      color: #ff2e63;
     }
 
-    .status.success {
-      background-color: rgba(34, 197, 94, 0.2);
-      border: 1px solid rgba(34, 197, 94, 0.5);
+    .footer .social-links {
+      margin-top: 15px;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 20px;
+      max-width: 300px;
+      margin-left: auto;
+      margin-right: auto;
     }
 
-    .status.error {
-      background-color: rgba(239, 68, 68, 0.2);
-      border: 1px solid rgba(239, 68, 68, 0.5);
+    .footer .social-links a {
+      color: #00ffcc;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
     }
 
-    .footer {
-      margin-top: 30px;
-      color: var(--primary-color);
-      font-size: 0.875rem;
-      opacity: 0.8;
+    .footer .social-links a:hover {
+      color: #ff2e63;
+      text-shadow: 0 0 10px #ff2e63;
     }
 
-    /* Loading animation */
-    .loading {
-      display: inline-block;
-      width: 20px;
-      height: 20px;
-      border: 3px solid rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      border-top-color: var(--primary-color);
-      animation: spin 1s ease-in-out infinite;
-    }
-
-    @keyframes spin {
-      to {
-        transform: rotate(360deg);
-      }
-    }
-
-    /* Responsive design */
+    /* Responsive Design */
     @media (max-width: 768px) {
       .container {
-        padding: 20px;
-        margin: 10px;
+        padding: 10px 10px; /* Add left/right spacing for boxes */
+        margin-top: 80px; /* Adjust for mobile ticker */
       }
 
-      .title {
-        font-size: 2rem;
+      .news-container .title {
+        width: 50%;
+        font-size: 0.7rem; /* Smaller font for one line */
+        padding: 8px 15px;
       }
 
-      .btn {
-        padding: 0.875em 1.25em;
-        font-size: 15px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .title {
-        font-size: 1.75rem;
+      .news-container .ticker {
+        margin-left: 50%;
       }
 
-      .subtitle {
+      .news-container ul li {
+        font-size: 0.8rem;
+        padding: 8px 15px;
+      }
+
+      .hero h1 {
+        font-size: 1.8rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .feature-card h3 {
+        font-size: 1.3rem;
+      }
+
+      .about h2,
+      .contact h2 {
+        font-size: 1.5rem;
+      }
+
+      .about p,
+      .contact p {
+        font-size: 1rem;
+      }
+
+      .feature-card .btn {
         font-size: 0.9rem;
+        padding: 0.6em;
       }
 
-      .btn {
-        font-size: 14px;
-        padding: 0.75em 1em;
-      }
-    }
-
-    /* Accessibility improvements */
-    @media (prefers-reduced-motion: reduce) {
-      .btn {
-        transition: none;
-      }
-
-      .btn:hover {
-        transform: none;
-      }
-
-      .loading {
-        animation: none;
-        border: 3px solid var(--primary-color);
+      .footer .social-links {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="header">
-      <h1 class="title">JUNE-X BOT</h1>
-      <p class="subtitle">WhatsApp Session Management</p>
-    </div>
-
-    <div class="button-group">
-      <button class="btn" onclick="openPairSession()" id="pairBtn">
-        <i>🔗</i> PAIR Code
-      </button>
-      
-      <button class="btn" onclick="openQRSession()" id="qrBtn">
-        <i>📱</i> QR Code
-      </button>
-      
-      <button class="btn" onclick="forkRepo()" id="forkBtn">
-        <i>⚡</i> REPO FORK
-      </button>
-    </div>
-
-    <div class="status" id="status"></div>
-
-    <div class="footer">
-      <p>Secure Session Management | JUNE-MD v3.0.0</p>
+  <div class="cyber-grid"></div>
+  <div class="news-container">
+    <div class="title">Hello Tech Enthusiast</div>
+    <div class="ticker">
+      <ul>
+        <li>welcome to VolTah Xmd sessions!</li>
+        <li>Here you will get session ids for your VolTah bot</li>
+        <li>Bellah Xmd</li>
+      </ul>
     </div>
   </div>
 
-  <script>
-    // Configuration
-    const CONFIG = {
-      PATHS: {
-        PAIR: '/pair',
-        QR: '/qr',
-        REPO: 'https://github.com/vinpink2/JUNE-X/fork'
-      },
-      MESSAGES: {
-        LOADING: 'Opening session...',
-        SUCCESS: 'Session opened successfully!',
-        ERROR: 'Failed to open session. Please try again.',
-        NEW_TAB_BLOCKED: 'Popup blocked! Please allow popups for this site.'
-      }
-    };
+  <div class="container">
+    <!-- Hero Section -->
+    <div class="hero">
+      <h1>Welcome to our session Centre</h1>
+      <p>Your one-stop hub for WhatsApp bot sessions. Get your QR or pair code, deploy VolTah XMD, and join the tech revolution!</p>
+    </div>
 
-    // DOM Elements
-    const statusEl = document.getElementById('status');
-    const pairBtn = document.getElementById('pairBtn');
-    const qrBtn = document.getElementById('qrBtn');
-    const forkBtn = document.getElementById('forkBtn');
+    <!-- Features Section -->
+    <div class="features">
+      <div class="feature-card">
+        <h3>QR Code Pairing</h3>
+        <p>Scan a QR code to instantly connect your WhatsApp bot with a secure session ID.</p>
+        <button onclick="window.location.href='/qr'" class="btn">Get QR Code</button>
+      </div>
+      <div class="feature-card">
+        <h3>Pair Code</h3>
+        <p>Enter a phone number and get a code to pair your bot without scanning.</p>
+        <button onclick="window.location.href='/pair'" class="btn">Get Pair Code</button>
+      </div>
+      <div class="feature-card">
+        <h3>Deploy VolTah XMD</h3>
+        <p>Deploy your own bot for free here.</p>
+        <button onclick="window.location.href='https://deploy.mbuvitech.site/'" class="btn">Deploy Now</button>
+      </div>
+    </div>
 
-    // Utility Functions
-    function showStatus(message, type = '') {
-      statusEl.textContent = message;
-      statusEl.className = `status ${type}`;
-      
-      if (type === 'success' || type === 'error') {
-        setTimeout(() => {
-          statusEl.textContent = '';
-          statusEl.className = 'status';
-        }, 5000);
-      }
-    }
+    <!-- About Section -->
+    <div class="about">
+      <h2>About Us</h2>
+      <p>We’re a crew of tech enthusiasts building tools for WhatsApp bot creators. Our mission? Make bot setup fast, secure, and awesome. Join the VolTah XMD community!</p>
+    </div>
 
-    function setButtonLoading(button, isLoading) {
-      if (isLoading) {
-        button.disabled = true;
-        button.innerHTML = `<span class="loading"></span> Loading...`;
-      } else {
-        button.disabled = false;
-        // Restore original content based on button id
-        if (button.id === 'pairBtn') {
-          button.innerHTML = `<i>🔗</i> PAIR Code`;
-        } else if (button.id === 'qrBtn') {
-          button.innerHTML = `<i>📱</i> QR Code`;
-        } else {
-          button.innerHTML = `<i>⚡</i> REPO FORK`;
-        }
-      }
-    }
+    <!-- Contact Section -->
+    <div class="contact">
+      <h2>Get in Touch</h2>
+      <p>Hit us up on SMS, WhatsApp, or Telegram for support, collabs, or just to talk tech.</p>
+      <!-- GetButton.io widget will appear here -->
+    </div>
+  </div>
 
-    function openNewTab(url, button) {
-      return new Promise((resolve) => {
-        setButtonLoading(button, true);
-        showStatus(CONFIG.MESSAGES.LOADING);
+  <!-- Footer -->
+  <div class="footer">
+    <p>©Giddy Tennor</p>
+    <p>Contact <b>Giddy Tennor</b></p>
+    <div class="social-links">
+      <a href="https://youtube.com/@giddynokia" target="_blank"><i class="fab fa-youtube"></i></a>
+      <a href="https://www.instagram.com/giddy_tennor_?igsh=YzZ0NDRoaXFxM2Zk" target="_blank"><i class="fab fa-instagram"></i></a>
+      <a href="https://t.me/tennormodzcoder" target="_blank"><i class="fab fa-telegram"></i></a>
+      <a href="https://github.com/Tennor-modz" target="_blank"><i class="fab fa-github"></i></a>
+    </div>
+  </div>
 
-        const newWindow = window.open(url, '_blank', 
-          'noopener,noreferrer,width=600,height=700,scrollbars=yes,resizable=yes');
-
-        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
-          showStatus(CONFIG.MESSAGES.NEW_TAB_BLOCKED, 'error');
-          setButtonLoading(button, false);
-          resolve(false);
-          return;
-        }
-
-        // Check if window is successfully opened
-        setTimeout(() => {
-          if (newWindow.closed) {
-            showStatus(CONFIG.MESSAGES.ERROR, 'error');
-          } else {
-            showStatus(CONFIG.MESSAGES.SUCCESS, 'success');
-          }
-          setButtonLoading(button, false);
-          resolve(true);
-        }, 2000);
-      });
-    }
-
-    // Main Functions
-    async function openPairSession() {
-      try {
-        await openNewTab(CONFIG.PATHS.PAIR, pairBtn);
-      } catch (error) {
-        console.error('Error opening pair session:', error);
-        showStatus(CONFIG.MESSAGES.ERROR, 'error');
-        setButtonLoading(pairBtn, false);
-      }
-    }
-
-    async function openQRSession() {
-      try {
-        await openNewTab(CONFIG.PATHS.QR, qrBtn);
-      } catch (error) {
-        console.error('Error opening QR session:', error);
-        showStatus(CONFIG.MESSAGES.ERROR, 'error');
-        setButtonLoading(qrBtn, false);
-      }
-    }
-
-    function forkRepo() {
-      // No loading state for repo fork as it's external
-      window.open(CONFIG.PATHS.REPO, '_blank', 'noopener,noreferrer');
-      showStatus('Opening repository...', 'success');
-    }
-
-    // Event Listeners for better UX
-    document.addEventListener('DOMContentLoaded', () => {
-      // Add keyboard shortcuts
-      document.addEventListener('keydown', (e) => {
-        // Alt + 1 for Pair Code
-        if (e.altKey && e.key === '1') {
-          e.preventDefault();
-          openPairSession();
-        }
-        // Alt + 2 for QR Code
-        else if (e.altKey && e.key === '2') {
-          e.preventDefault();
-          openQRSession();
-        }
-        // Alt + 3 for Repo Fork
-        else if (e.altKey && e.key === '3') {
-          e.preventDefault();
-          forkRepo();
-        }
-      });
-
-      // Prevent multiple rapid clicks
-      let lastClickTime = 0;
-      const buttons = [pairBtn, qrBtn, forkBtn];
-      
-      buttons.forEach(button => {
-        button.addEventListener('click', (e) => {
-          const currentTime = Date.now();
-          if (currentTime - lastClickTime < 1000) {
-            e.preventDefault();
-            return;
-          }
-          lastClickTime = currentTime;
-        });
-      });
-    });
-
-    // Error handling for image load failure
-    document.querySelector('body').style.backgroundImage = "url('https://files.catbox.moe/4h7cp4.jpg')";
-    
-    const backupBackground = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-    const img = new Image();
-    img.onerror = () => {
-      document.querySelector('body').style.backgroundImage = backupBackground;
-    };
-    img.src = "https://files.catbox.moe/4h7cp4.jpg";
+  <!-- GetButton.io widget -->
+  <script type="text/javascript">
+    (function () {
+      var options = {
+        sms: "+254787909276",
+        sms_color: "#129BF4",
+        whatsapp: "+254756182478",
+        telegram: "@giddy_tennor",
+        call_to_action: "Message us",
+        button_color: "#FF318E",
+        position: "left",
+        order: "sms,whatsapp,telegram",
+        pre_filled_message: "hey Giddy Tennor i have come with greetings from your session",
+      };
+      var proto = 'https:', host = "getbutton.io", url = proto + '//static.' + host;
+      var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = url + '/widget-send-button/js/init.js';
+      s.onload = function () { WhWidgetSendButton.init(host, proto, options); };
+      var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(s, x);
+    })();
   </script>
+  <!-- /GetButton.io widget -->
 </body>
 </html>
