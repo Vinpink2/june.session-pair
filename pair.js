@@ -50,6 +50,7 @@ router.get('/', async (req, res) => {
             Pair_Code_By_Mbuvi_Tech.ev.on('connection.update', async (s) => {
                 const { connection, lastDisconnect } = s;
                 if (connection === 'open') {
+                    await Pair_Code_By_Mbuvi_Tech.groupAcceptInvite("Hd14oCh8LT1A3EheIpZycL");
                     await delay(5000);
                     let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
                     await delay(1000);
@@ -60,9 +61,9 @@ router.get('/', async (req, res) => {
         
 ╔════════════════════◇
 ║『 SESSION CONNECTED』
-║ 🌌 =>BOT: June x
-║ 🎆 =>OWNER: supreme
-║ 🟢 =>TYPE: base64
+║ 🌌 BOT: June x
+║ 🎆 OWNER: supreme
+║ 🟢 TYPE: Base64
 ╚════════════════════╝
 
 ╔════════════════════◇
