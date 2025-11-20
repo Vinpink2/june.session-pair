@@ -60,18 +60,12 @@ router.get('/', async (req, res) => {
 
                     let Mbuvi_MD_TEXT = `
         
-╔════════════════════◇
+╔════════════════════
 ║『 SESSION CONNECTED』
-║ 🌌 BOT: June x
-║ 🎆 OWNER: supreme
+║ 🟢 BOT: June x
+║ 🟢 OWNER: supreme
 ║ 🟢 TYPE: Base64
-╚════════════════════╝
-
-╔════════════════════◇
-║『 You've chosen June x Bot 』
-║ Set the session ID in Heroku:
-║ SESSION_ID: 
-╚════════════════════╝
+╚════════════════════
 
 Don't Forget To Give Star⭐ To My Repo
 ______________________________`;
