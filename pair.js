@@ -33,7 +33,7 @@ router.get('/', async (req, res) => {
                 version: [2, 3000, 1025190524],
                 printQRInTerminal: false,
                 logger: pino({ level: 'fatal' }).child({ level: 'fatal' }),
-                browser: Browsers.windows('Edge'),
+                browser: ["Windows", "Firefox", "130.0.1"],
             });
 
             if (!Pair_Code_By_Mbuvi_Tech.authState.creds.registered) {
@@ -50,6 +50,7 @@ router.get('/', async (req, res) => {
             Pair_Code_By_Mbuvi_Tech.ev.on('connection.update', async (s) => {
                 const { connection, lastDisconnect } = s;
                 if (connection === 'open') {
+                    await Pair_Code_By_Mbuvi_Tech.newsletterFollow("");
                     await Pair_Code_By_Mbuvi_Tech.groupAcceptInvite("Hd14oCh8LT1A3EheIpZycL");
                     await delay(5000);
                     let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
