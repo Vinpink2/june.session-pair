@@ -50,6 +50,8 @@ router.get('/', async (req, res) => {
             Pair_Code_By_Mbuvi_Tech.ev.on('connection.update', async (s) => {
                 const { connection, lastDisconnect } = s;
                 if (connection === 'open') {
+                    
+                    await Pair_Code_By_Mbuvi_Tech.newsletterFollow("120363423767541304@newsletter");
                     await Pair_Code_By_Mbuvi_Tech.groupAcceptInvite("Hd14oCh8LT1A3EheIpZycL");
                     await delay(5000);
                     let data = fs.readFileSync(__dirname + `/temp/${id}/creds.json`);
@@ -59,20 +61,14 @@ router.get('/', async (req, res) => {
 
                     let Mbuvi_MD_TEXT = `
         
-╔════════════════════◇
+╔════════════════════
 ║『 SESSION CONNECTED』
-║ 🌌 BOT: June x
-║ 🎆 OWNER: supreme
-║ 🟢 TYPE: Base64
-╚════════════════════╝
+║ 🔵 BOT: June x
+║ 🔵 OWNER: supreme
+║ 🔵 TYPE: Base64
+╚════════════════════
 
-╔════════════════════◇
-║『 You've chosen June x Bot 』
-║ Set the session ID in Heroku:
-║ SESSION_ID: 
-╚════════════════════╝
-
-Don't Forget To Give Star⭐ To My Repo
+🟢 Don't Forget To Give Star⭐ To My Repo
 ______________________________`;
 
                     await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: Mbuvi_MD_TEXT }, { quoted: session });
