@@ -1,19 +1,19 @@
 {
-    "description": "VolTah-session",
-    "main": "./voltah.js",
+    "description": "bot-session",
+    "main": "./index.js",
   "engines" : { 
     "npm" : ">=9.7.2",
     "node" : ">=20.0.0"
     },
     "scripts": {
-    "start": "node voltah.js"
+    "start": "node index.js"
   },
-  "author": "Giddy Tennor",
+  "author": "vinpink2",
   "license": "GPL-3.0 license",
   "dependencies": {
     "baileys-pro": "latest",
     "maher-zubair-baileys": "^6.6.5",
-            "@whiskeysockets/baileys":"npm:wileys",
+    "@whiskeysockets/baileys":"npm:wileys",
     "qrcode": "^1.5.3",
     "awesome-phonenumber": "^2.64.0",
     "pino": "^8.1.0",
