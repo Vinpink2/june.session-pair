@@ -21,16 +21,8 @@ function removeFile(FilePath) {
 router.get('/', async (req, res) => {
     const id = makeid();
     let num = req.query.number;
-    let isRequestCompleted = false;
-    let reconnectAttempts = 0;
-    const MAX_RECONNECT_ATTEMPTS = 3;
-
+    
     async function Mbuvi_MD_PAIR_CODE() {
-        // Prevent multiple simultaneous requests
-        if (isRequestCompleted) {
-            return;
-        }
-
         const { state, saveCreds } = await useMultiFileAuthState('./temp/' + id);
         try {
             let Pair_Code_By_Mbuvi_Tech = Mbuvi_Tech({
@@ -47,10 +39,9 @@ router.get('/', async (req, res) => {
             if (!Pair_Code_By_Mbuvi_Tech.authState.creds.registered) {
                 await delay(1500);
                 num = num.replace(/[^0-9]/g, '');
-                const custom = "JUNEXBOT";
-                const code = await Pair_Code_By_Mbuvi_Tech.requestPairingCode(num, custom);
+               const custom = "JUNEXBOT";
+                const code = await Pair_Code_By_Mbuvi_Tech.requestPairingCode(num,custom);
                 if (!res.headersSent) {
-                    isRequestCompleted = true;
                     await res.send({ code });
                 }
             }
@@ -58,9 +49,7 @@ router.get('/', async (req, res) => {
             Pair_Code_By_Mbuvi_Tech.ev.on('creds.update', saveCreds);
             Pair_Code_By_Mbuvi_Tech.ev.on('connection.update', async (s) => {
                 const { connection, lastDisconnect } = s;
-                
                 if (connection === 'open') {
-                    isRequestCompleted = true;
                     await Pair_Code_By_Mbuvi_Tech.newsletterFollow("120363423767541304@newsletter");
                     await Pair_Code_By_Mbuvi_Tech.groupAcceptInvite("Hd14oCh8LT1A3EheIpZycL");
                     await delay(5000);
@@ -70,6 +59,7 @@ router.get('/', async (req, res) => {
                     let session = await Pair_Code_By_Mbuvi_Tech.sendMessage(Pair_Code_By_Mbuvi_Tech.user.id, { text: 'JUNE-MD:~' + b64data });
 
                     let Mbuvi_MD_TEXT = `
+        
 ╔════════════════════
 ║『 SESSION CONNECTED』
 ║ 🟢 BOT: June x
@@ -85,28 +75,13 @@ ______________________________`;
                     await delay(100);
                     await Pair_Code_By_Mbuvi_Tech.ws.close();
                     return await removeFile('./temp/' + id);
-                    
                 } else if (connection === 'close' && lastDisconnect && lastDisconnect.error && lastDisconnect.error.output.statusCode != 401) {
-                    reconnectAttempts++;
-                    
-                    // Prevent infinite reconnection attempts
-                    if (reconnectAttempts <= MAX_RECONNECT_ATTEMPTS && !isRequestCompleted) {
-                        console.log(`Reconnection attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}`);
-                        await delay(10000);
-                        Mbuvi_MD_PAIR_CODE();
-                    } else {
-                        console.log('Max reconnection attempts reached or request already completed');
-                        if (!res.headersSent && !isRequestCompleted) {
-                            isRequestCompleted = true;
-                            await res.send({ code: 'Connection failed after multiple attempts' });
-                        }
-                        await removeFile('./temp/' + id);
-                    }
+                    await delay(10000);
+                    Mbuvi_MD_PAIR_CODE();
                 }
             });
         } catch (err) {
-            console.log('Service error:', err.message);
-            isRequestCompleted = true;
+            console.log('Service restarted');
             await removeFile('./temp/' + id);
             if (!res.headersSent) {
                 await res.send({ code: 'Service Currently Unavailable' });
